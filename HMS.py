@@ -21,7 +21,7 @@ mp_hands = mp.solutions.hands
 pTime = 0
 cTime = 0
 
-mouse.FAILSAFE = False
+# mouse.FAILSAFE = False
 x, y = mouse.position()
 arr_x = np.array([0, 0, 0], dtype=float)
 arr_y = np.array([0, 0, 0], dtype=float)

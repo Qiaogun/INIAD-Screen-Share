@@ -4,12 +4,10 @@ import time
 import numpy as np
 from numpy.core.fromnumeric import mean
 import pyautogui as mouse
-
-import math
 import win32gui, win32api, win32con
 
-
-cap = cv2.VideoCapture(2)
+#cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(2, cv2.CAP_DSHOW)
 width, height = mouse.size()
 #cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)  #设置宽度
@@ -46,7 +44,6 @@ with mp_hands.Hands(max_num_hands=1,
             start = time.time()
             keypoints = []
             for handLms in results.multi_hand_landmarks:
-                hand_landmarks = results.multi_hand_landmarks[0]
                 for data_point in handLms.landmark:
                     keypoints.append({
                         'X': data_point.x,
@@ -98,29 +95,10 @@ with mp_hands.Hands(max_num_hands=1,
 
                 # print("YY: ",arr_F_Y[2] - arr_F_Y[0])
                 # print("ZZ: ",arr_F_Z[2] - arr_F_Z[0])
-
-                #老的点击 （弱小
-                # if abs(arr_F_Y[2] - arr_F_Y[0])>160 and abs(arr_F_Z[2] - arr_F_Z[0])>25:
-                #     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 200, 200, 0, 0)
-                #     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 200, 200, 0, 0)
-                    #time.sleep(0.5)
-
-
-                #新的点击 （强大
-                index_finger_top = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
-                index_finger_second = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_DIP]
-
-                distence = np.sqrt(np.sum(np.square(np.array([index_finger_top.x,index_finger_top.y])-np.array([index_finger_second.x,index_finger_second.y]))))
-                deep = index_finger_top.z - index_finger_second.z
-                
-                distence = distence*1980
-                print(distence)
-                if distence < 80 and abs(arr_F_Z[2] - arr_F_Z[0])>25:
+                if abs(arr_F_Y[2] - arr_F_Y[0])>160 and abs(arr_F_Z[2] - arr_F_Z[0])>25:
                     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 200, 200, 0, 0)
-
-                if distence > 80 and abs(arr_F_Z[2] - arr_F_Z[0])>25:
                     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 200, 200, 0, 0)
-
+                    #time.sleep(0.5)
                 #mouse.moveTo(int(avg_x), int(avg_y),duration=0)#慢
                 #print(mouse.position())
 

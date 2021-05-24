@@ -3,14 +3,13 @@ import mediapipe as mp
 import time
 import pandas as pd
 
-
-
-data_list = ['Up_down', 'Click', 'Rock', 'Relax', 'Ok_pose','Chinese_seven']
-time_list = [15, 15, 15, 15, 15, 15]
+data_list = ['Up_down', 'Click', 'Rock', 'Relax', 'Ok_pose', 'Chinese_seven']
+time_list = [16, 15, 15, 15, 15, 15]
 
 
 def get_data(filename, timepr):
-    cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+
+    cap = cv2.VideoCapture(2, cv2.CAP_DSHOW)
     #cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)  #设置宽度
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -20,8 +19,11 @@ def get_data(filename, timepr):
     mpDraw = mp.solutions.drawing_utils
 
     mp_hands = mp.solutions.hands
-
-    start = time.time()
+    # start = time.time()
+    counters = 0 
+    pTime = 0
+    cTime = 0
+    frame_count = 0
     with mp_hands.Hands(max_num_hands=1,
                         min_detection_confidence=0.8,
                         min_tracking_confidence=0.8) as hands:
@@ -44,16 +46,28 @@ def get_data(filename, timepr):
                                           mp_hands.HAND_CONNECTIONS)
             else:
                 keypoints = [0] * 63
+
             dataframe = pd.DataFrame(keypoints)
             (dataframe.T).to_csv('./data/' + filename + '.csv',
                                  mode='a',
                                  header=False,
                                  index=False)
+            cTime = time.time()
+            fps = round((1 / (cTime - pTime) / 30), 2)
+            pTime = cTime
+            cv2.putText(img, str(int(frame_count)), (10, 70), cv2.FONT_HERSHEY_PLAIN,
+                        3, (255, 0, 255), 3)
             cv2.imshow("FMS", img)
-            end = time.time()
-            print(end - start)
-            if (end - start) > timepr:
+            # end = time.time()
+            # print(frame_count)
+            # print(end - start)
+            counters += 1
+            print(counters)
+            frame_count = fps + frame_count
+            if (counters) > 450:
                 break
+            # if (frame_count) > 450:
+            #     break
             if cv2.waitKey(2) & 0xFF == 27:
                 break
         cap.release()

@@ -3,8 +3,10 @@ import mediapipe as mp
 import time
 import pandas as pd
 
-data_list = ['Up_down', 'Click', 'Rock', 'Relax', 'Ok_pose', 'Chinese_seven']
-time_list = [16, 15, 15, 15, 15, 15]
+# data_list = ['Up_down', 'Click', 'Rock', 'Relax', 'Ok_pose', 'Chinese_seven']
+# time_list = [16, 15, 15, 15, 15, 15]
+data_list=['Click']
+time_list = [15]
 
 
 def get_data(filename, timepr):

@@ -22,7 +22,7 @@ def get_data(filename, timepr):
 
     mp_hands = mp.solutions.hands
     # start = time.time()
-    counters = 0 
+    counters = 0
     pTime = 0
     cTime = 0
     frame_count = 0
@@ -83,3 +83,4 @@ if __name__ == "__main__":
         print("Next")
 
     print("お疲れ様です")
+
